@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const handleBackdropClick = (
     e: React.MouseEvent<HTMLDialogElement, MouseEvent>
   ) => {
+    e.preventDefault();
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -31,7 +32,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
     <dialog
       ref={dialogRef}
       onClick={handleBackdropClick}
-      className="relative rounded-md"
+      className={` relative rounded-md transition-opacity duration-[3s] `}
     >
       <button
         onClick={onClose}

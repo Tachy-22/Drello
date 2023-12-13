@@ -7,7 +7,7 @@ const AddMemberForm = () => {
         className="w-full mb-4  px-3 py-2 border rounded-md focus:outline-none  focus:border-blue-500"
         type="text"
         placeholder="Email address or name"
-        value=""
+       
       />
 
       <div className="flex justify-between">

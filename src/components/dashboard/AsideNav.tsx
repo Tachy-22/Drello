@@ -7,6 +7,11 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import Modal from "../modal/Modal";
 import AddMemberForm from "./AddMemberForm";
+import useModalControls from "./controls/hooks/useModalControls";
+import { members, boards } from "./controls/hooks/useModalControls";
+import AddBoardForm from "./AddBoardForm";
+import { InitialBoardsData } from "../Boards/initialdata";
+
 const navData = [
   { href: "/dashboard/boards", text: "Boards", icon: <TbLayoutBoardSplit /> },
   {
@@ -16,10 +21,7 @@ const navData = [
     add: true,
   },
 ];
-const yourBoardsData = [
-  { href: "/dashboard/demo1", text: "Demo1" },
-  { href: "/dashboard/demo2", text: "Demo2" },
-];
+
 
 const AsideNav = () => {
   const [isAsideNavVisible, setAsideNavVisibility] = useState(true);
@@ -27,21 +29,16 @@ const AsideNav = () => {
     setAsideNavVisibility((prev) => !prev);
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const { isOpen, modalChild, handleModalChild, closeModal } =
+    useModalControls();
 
   return (
     <aside
-      className={`" bg-gray-800/90 text-white h-full w-[18rem] transition-all duration-[1s]  ${
-        isAsideNavVisible ? "" : "absolute -translate-x-[100%] "
-      } gap-3 `}
+      className={`" bg-gray-800/90 text-white top-0 h-full w-[18rem] transition-all duration-[0.1s]  ${
+        isAsideNavVisible
+          ? "absolute lg:static -translate-x-[100%] lg:translate-x-0"
+          : "absolute -translate-x-[100%] "
+      } gap-3 z-50`}
     >
       <div className=" flex justify-between items-center p-3  border-b drop-shadow-lg">
         <div className="">
@@ -53,7 +50,7 @@ const AsideNav = () => {
           className={` ${
             isAsideNavVisible
               ? "text-white -rotate-90 border-white"
-              : "translate-x-[150%] text-black rotate-90 border-black "
+              : "translate-x-[150%] translate-y-[160%] bg-white text-black rotate-90 border-black "
           } cursor-pointer flex justify-center items-center  text-2xl font-extrabold  rounded-full h-8 w-8 border  transition-all duration-[1s]`}
         >
           <span>&#94;</span>
@@ -71,8 +68,10 @@ const AsideNav = () => {
               <p className="text-sm">{text}</p>
               {add && (
                 <FaPlus
-                  onClick={openModal}
-                  className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-xl"
+                  onClick={() => {
+                    handleModalChild(members);
+                  }}
+                  className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-2xl"
                 />
               )}
             </div>
@@ -80,21 +79,39 @@ const AsideNav = () => {
         ))}
       </div>
       <div className=" flex flex-col ">
-        <p className="text-md font-semibold px-3 py-2">Your Boards</p>
+        <p className="text-md font-semibold px-3 py-2 flex justify-between items-center">
+          Your Boards{" "}
+          <FaPlus
+            onClick={() => {
+              handleModalChild(boards);
+            }}
+            className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-2xl"
+          />
+        </p>
         <div className=" flex flex-col text-sm">
-          {yourBoardsData.map(({ href, text }, index) => (
-            <Link
-              key={index}
-              className="hover:bg-white/20 px-3 py-2"
-              href={href}
-            >
-              <p className="">{text}</p>
-            </Link>
-          ))}
+          {InitialBoardsData.boardOrder.map((columnId, index) => {
+            const boardTitle =
+              InitialBoardsData.boards[
+                columnId as keyof typeof InitialBoardsData.boards
+              ].title;
+            return (
+              <Link
+                key={index}
+                className="hover:bg-white/20 px-3 py-2"
+                href={columnId}
+              >
+                <p className="">{boardTitle}</p>
+              </Link>
+            );
+          })}
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <AddMemberForm/>
+        {modalChild === members ? (
+          <AddMemberForm />
+        ) : (
+          <AddBoardForm onClose={closeModal} />
+        )}
       </Modal>
     </aside>
   );
