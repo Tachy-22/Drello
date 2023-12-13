@@ -7,6 +7,8 @@ import useDragDropContext from "./controls/hooks/useDragDropContext";
 const BoardTabContainer = ({ boardId }: { boardId: string }) => {
   const { listData, boardData, handleDragEnd } = useDragDropContext(boardId);
 
+
+
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
       <Droppable droppableId="all-columns" direction="horizontal" type="column">
@@ -15,7 +17,7 @@ const BoardTabContainer = ({ boardId }: { boardId: string }) => {
             <div
               {...provided.droppableProps}
               ref={provided.innerRef}
-              className="flex gap-4 p-4"
+              className="flex gap-4 p-4 px-[3rem]"
             >
               {boardData.map((columnId, index) => {
                 const column = listData.columns[columnId];

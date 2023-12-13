@@ -5,6 +5,12 @@ import Image from "next/image";
 const UserProfile = () => {
   const { isLoading, user } = useKindeBrowserClient();
   console.log(isLoading, user);
+
+
+
+
+  
+
   const userProfileImage = useMemo(
     () => user?.picture || "/svgs/noPictureIcon.svg",
     [user?.picture]

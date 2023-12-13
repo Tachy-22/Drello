@@ -4,12 +4,11 @@ import React from "react";
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const handleDragEnd = () => {};
   return (
-    <section className="bg-white h-full  flex">
+    <section className=" bg-white h-full relative  flex">
       <div className="">
         <AsideNav />
-        
       </div>
-      <div className="w-full">{children}</div>
+      <div className="w-full  ">{children}</div>
     </section>
   );
 };

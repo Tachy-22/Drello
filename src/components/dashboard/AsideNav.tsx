@@ -21,10 +21,7 @@ const navData = [
     add: true,
   },
 ];
-const yourBoardsData = [
-  { href: "/dashboard/demo1", text: "Demo1" },
-  { href: "/dashboard/demo2", text: "Demo2" },
-];
+
 
 const AsideNav = () => {
   const [isAsideNavVisible, setAsideNavVisibility] = useState(true);
@@ -37,9 +34,11 @@ const AsideNav = () => {
 
   return (
     <aside
-      className={`" bg-gray-800/90 text-white h-full w-[18rem] transition-all duration-[1s]  ${
-        isAsideNavVisible ? "" : "absolute -translate-x-[100%] "
-      } gap-3 `}
+      className={`" bg-gray-800/90 text-white top-0 h-full w-[18rem] transition-all duration-[0.1s]  ${
+        isAsideNavVisible
+          ? "absolute lg:static -translate-x-[100%] lg:translate-x-0"
+          : "absolute -translate-x-[100%] "
+      } gap-3 z-50`}
     >
       <div className=" flex justify-between items-center p-3  border-b drop-shadow-lg">
         <div className="">
@@ -51,7 +50,7 @@ const AsideNav = () => {
           className={` ${
             isAsideNavVisible
               ? "text-white -rotate-90 border-white"
-              : "translate-x-[150%] text-black rotate-90 border-black "
+              : "translate-x-[150%] translate-y-[160%] bg-white text-black rotate-90 border-black "
           } cursor-pointer flex justify-center items-center  text-2xl font-extrabold  rounded-full h-8 w-8 border  transition-all duration-[1s]`}
         >
           <span>&#94;</span>
