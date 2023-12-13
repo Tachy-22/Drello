@@ -7,6 +7,11 @@ import { FaPeopleGroup } from "react-icons/fa6";
 import { FaPlus } from "react-icons/fa6";
 import Modal from "../modal/Modal";
 import AddMemberForm from "./AddMemberForm";
+import useModalControls from "./controls/hooks/useModalControls";
+import { members, boards } from "./controls/hooks/useModalControls";
+import AddBoardForm from "./AddBoardForm";
+import { InitialBoardsData } from "../Boards/initialdata";
+
 const navData = [
   { href: "/dashboard/boards", text: "Boards", icon: <TbLayoutBoardSplit /> },
   {
@@ -27,15 +32,8 @@ const AsideNav = () => {
     setAsideNavVisibility((prev) => !prev);
   }, []);
 
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const { isOpen, modalChild, handleModalChild, closeModal } =
+    useModalControls();
 
   return (
     <aside
@@ -71,8 +69,10 @@ const AsideNav = () => {
               <p className="text-sm">{text}</p>
               {add && (
                 <FaPlus
-                  onClick={openModal}
-                  className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-xl"
+                  onClick={() => {
+                    handleModalChild(members);
+                  }}
+                  className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-2xl"
                 />
               )}
             </div>
@@ -80,21 +80,39 @@ const AsideNav = () => {
         ))}
       </div>
       <div className=" flex flex-col ">
-        <p className="text-md font-semibold px-3 py-2">Your Boards</p>
+        <p className="text-md font-semibold px-3 py-2 flex justify-between items-center">
+          Your Boards{" "}
+          <FaPlus
+            onClick={() => {
+              handleModalChild(boards);
+            }}
+            className="hover:bg-white/20 rounded-md p-1 h-fit flex justify-center items-center text-center text-2xl"
+          />
+        </p>
         <div className=" flex flex-col text-sm">
-          {yourBoardsData.map(({ href, text }, index) => (
-            <Link
-              key={index}
-              className="hover:bg-white/20 px-3 py-2"
-              href={href}
-            >
-              <p className="">{text}</p>
-            </Link>
-          ))}
+          {InitialBoardsData.boardOrder.map((columnId, index) => {
+            const boardTitle =
+              InitialBoardsData.boards[
+                columnId as keyof typeof InitialBoardsData.boards
+              ].title;
+            return (
+              <Link
+                key={index}
+                className="hover:bg-white/20 px-3 py-2"
+                href={columnId}
+              >
+                <p className="">{boardTitle}</p>
+              </Link>
+            );
+          })}
         </div>
       </div>
       <Modal isOpen={isOpen} onClose={closeModal}>
-        <AddMemberForm/>
+        {modalChild === members ? (
+          <AddMemberForm />
+        ) : (
+          <AddBoardForm onClose={closeModal} />
+        )}
       </Modal>
     </aside>
   );

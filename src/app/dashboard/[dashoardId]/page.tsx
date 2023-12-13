@@ -1,10 +1,15 @@
-import Boards from "next/components/boardcards/Boards";
+import BoardHeader from "next/components/Boards/BoardHeader";
+import BoardTabContainer from "next/components/Boards/BoardTabContainer";
+
+import React from "react";
 
 const DashBoard = ({ params }: { params: { dashoardId: string } }) => {
   console.log(params.dashoardId);
+
   return (
-    <section className="bg-white h-full -2  transition-all duration-[1s]">
-      <Boards />
+    <section className="bg-blue-600 h-full w-full   transition-all duration-[1s]">
+      <BoardHeader boardId={params.dashoardId} />
+      <BoardTabContainer boardId={params.dashoardId} />
     </section>
   );
 };
