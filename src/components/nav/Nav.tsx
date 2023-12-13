@@ -44,7 +44,7 @@ const Nav = async () => {
     });
 
   return (
-    <nav className="py-[0.5rem] w-full h-fit flex justify-center absolute top-0 z-60 bg-white shadow-lg">
+    <nav className="py-[0.5rem] w-full h-fit flex justify-center absolute top-0 z-60 bg-white/90 shadow-lg">
       <DesktopNav />
     </nav>
   );
